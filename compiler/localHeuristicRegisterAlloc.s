@@ -1,8 +1,8 @@
-	.file	"calling.c"
+	.file	"localHeuristicRegisterAlloc.c"
 	.text
-	.globl	f
-	.type	f, @function
-f:
+	.globl	foo
+	.type	foo, @function
+foo:
 .LFB0:
 	.cfi_startproc
 	pushl	%ebp
@@ -12,18 +12,22 @@ f:
 	.cfi_def_cfa_register 5
 	subl	$16, %esp
 	movl	8(%ebp), %eax
-	movl	%eax, -8(%ebp)
-	movl	-8(%ebp), %eax
 	imull	12(%ebp), %eax
+	movl	%eax, %edx
+	movl	16(%ebp), %eax
+	imull	20(%ebp), %eax
+	addl	%edx, %eax
 	movl	%eax, -4(%ebp)
-	movl	-4(%ebp), %eax
+	movl	-4(%ebp), %edx
+	movl	20(%ebp), %eax
+	addl	%edx, %eax
 	leave
 	.cfi_restore 5
 	.cfi_def_cfa 4, 4
 	ret
 	.cfi_endproc
 .LFE0:
-	.size	f, .-f
+	.size	foo, .-foo
 	.globl	main
 	.type	main, @function
 main:
@@ -34,26 +38,17 @@ main:
 	.cfi_offset 5, -8
 	movl	%esp, %ebp
 	.cfi_def_cfa_register 5
-	subl	$16, %esp
-	movl	$77, -4(%ebp)
-	pushl	$8
-	pushl	-4(%ebp)
-	call	f
-	addl	$8, %esp
-	movl	%eax, -4(%ebp)
-	movl	-4(%ebp), %ecx
-	movl	$1717986919, %edx
-	movl	%ecx, %eax
-	imull	%edx
-	sarl	%edx
-	movl	%ecx, %eax
-	sarl	$31, %eax
-	subl	%eax, %edx
-	movl	%edx, %eax
-	sall	$2, %eax
-	addl	%edx, %eax
-	subl	%eax, %ecx
-	movl	%ecx, %eax
+	subl	$32, %esp
+	movl	$1, -20(%ebp)
+	movl	$2, -16(%ebp)
+	movl	$3, -12(%ebp)
+	movl	$4, -8(%ebp)
+	pushl	-8(%ebp)
+	pushl	-12(%ebp)
+	pushl	-16(%ebp)
+	pushl	-20(%ebp)
+	call	foo
+	addl	$16, %esp
 	movl	%eax, -4(%ebp)
 	movl	-4(%ebp), %eax
 	leave
