@@ -1,5 +1,5 @@
 {
-	'target': 
+	'targets': 
 	[
 		{
 			'target_name': 'hello',
